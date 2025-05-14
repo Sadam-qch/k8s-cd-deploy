@@ -5,7 +5,13 @@ metadata:
   labels:
     app: paginaeducacion
 spec:
+  progressDeadlineSeconds: 600
   replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: paginaeducacion
@@ -26,6 +32,20 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 5
         volumeMounts:
         - name: app-data
           mountPath: /app/data
