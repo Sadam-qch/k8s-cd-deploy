@@ -1,0 +1,10 @@
+stages:
+  - name: Deploy to Kubernetes
+    steps:
+      - runScriptConfig:
+          image: bitnami/kubectl
+          shellScript: |
+            kubectl apply -f k8s/pvc.yaml
+            kubectl apply -f k8s/deployment.yaml
+            kubectl apply -f k8s/service.yaml
+            kubectl rollout status deployment/paginaeducacion 

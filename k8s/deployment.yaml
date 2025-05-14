@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paginaeducacion
+  labels:
+    app: paginaeducacion
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: paginaeducacion
+  template:
+    metadata:
+      labels:
+        app: paginaeducacion
+    spec:
+      containers:
+      - name: paginaeducacion
+        image: sadamquispe/pageducacion:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: app-data
+          mountPath: /app/data
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: paginaeducacion-pvc 
