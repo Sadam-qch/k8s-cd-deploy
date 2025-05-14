@@ -1,0 +1,27 @@
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata:
+  name: pageedu
+  annotations:
+    field.cattle.io/description: "Despliegue de página de educación"
+  labels:
+    owner: sadam
+  namespace: fleet-default
+spec:
+  branch: master
+  correctDrift:
+    enabled: true
+    force: true
+  insecureSkipTLSVerify: true
+  pollingInterval: 30s
+  repo: https://github.com/Sadam-qch/k8s-cd-deploy.git
+  targets:
+    - clusterSelector:
+        matchExpressions:
+          - key: provider.cattle.io
+            operator: NotIn
+            values:
+              - harvester
+  targetNamespace: default
+  deleteNamespace: false
+  keepResources: true 
